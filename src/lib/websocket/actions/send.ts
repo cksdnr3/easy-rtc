@@ -4,7 +4,7 @@ type ConnectedAction = {
   token: string;
 };
 
-type GetIdSuccess = {
+type GetIdSuccessAction = {
   type: 'getIdSuccess';
   id: string;
 };
@@ -13,7 +13,16 @@ type ReuseIdSuccessAction = {
   type: 'reuseIdSuccess';
 };
 
-export type SendAction = ConnectedAction | ReuseIdSuccessAction | GetIdSuccess;
+type SubscriptionMessageAction = {
+  type: 'subscriptionMessage';
+  message: any;
+};
+
+export type SendAction =
+  | ConnectedAction
+  | ReuseIdSuccessAction
+  | GetIdSuccessAction
+  | SubscriptionMessageAction;
 
 export const actionCreator = {
   connected: (id: string, token: string): ConnectedAction => ({
@@ -22,8 +31,12 @@ export const actionCreator = {
     token,
   }),
   reuseIdSuccess: (): ReuseIdSuccessAction => ({ type: 'reuseIdSuccess' }),
-  getIdSuccess: (id: string): GetIdSuccess => ({
+  getIdSuccess: (id: string): GetIdSuccessAction => ({
     type: 'getIdSuccess',
     id,
+  }),
+  subscriptionMessage: (message: any): SubscriptionMessageAction => ({
+    type: 'subscriptionMessage',
+    message,
   }),
 };

@@ -1,6 +1,7 @@
 import fp from 'fastify-plugin';
-import websocketPlugin from 'fastify-websocket';
+import websocketPlugin, { WebsocketPluginOptions } from 'fastify-websocket';
 
-export default fp(async (fastify, opts) => {
-  fastify.register(websocketPlugin);
+export default fp<WebsocketPluginOptions>(async (fastify, opts) => {
+  fastify.register(websocketPlugin, {});
+  return '';
 });

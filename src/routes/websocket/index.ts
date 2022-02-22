@@ -1,14 +1,18 @@
-import { isReceiveAction } from './lib/actions/receive';
+import { isReceiveAction } from '../../lib/websocket/actions/receive';
 import { FastifyPluginAsync } from 'fastify';
-import Session from './lib/Session';
+import Session from '../../lib/websocket/Session';
 
 const websocket: FastifyPluginAsync = async (fastify, opts) => {
   fastify.get('/', { websocket: true }, (connection, req) => {
+    const session = new Session(connection.socket);
     connection.socket.on('message', (message) => {
       try {
         const data = JSON.parse(message.toString());
         if (!isReceiveAction(data)) return;
-      } catch (e) {}
+        session.handle(data);
+      } catch (e) {
+        console.error(e);
+      }
     });
   });
 };
